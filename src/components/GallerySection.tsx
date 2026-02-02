@@ -8,15 +8,18 @@ const FEATURED_LIMIT = 4;
 
 export function GallerySection({
   group,
+  index = 0,
   onSelectToken,
 }: {
   group: TokenGroup;
+  index?: number;
   onSelectToken: (tokenId: string) => void;
 }) {
   const ref = useRef<HTMLElement>(null);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(index === 0);
 
   useEffect(() => {
+    if (visible) return;
     const el = ref.current;
     if (!el) return;
 
@@ -27,12 +30,12 @@ export function GallerySection({
           observer.unobserve(el);
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.05 }
     );
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [visible]);
 
   const allTokens = group.projects.flatMap((p) => p.tokens);
   const heroToken = allTokens[0];

@@ -187,10 +187,11 @@ export default function GalleryPage() {
             groups={status.groups}
             walletCount={status.walletCount}
           />
-          {status.groups.map((group) => (
+          {status.groups.map((group, i) => (
             <GallerySection
               key={group.label}
               group={group}
+              index={i}
               onSelectToken={handleSelectToken}
             />
           ))}
