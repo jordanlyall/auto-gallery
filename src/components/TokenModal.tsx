@@ -274,12 +274,12 @@ export function TokenModal({ tokenId, tokenIds, onNavigate, onClose }: Props) {
         </div>
       )}
 
-      {token && <TokenDetailContent token={token} />}
+      {token && <TokenDetailContent token={token} uiVisible={uiVisible} />}
     </div>
   );
 }
 
-function TokenDetailContent({ token }: { token: ArtBlocksTokenDetail }) {
+function TokenDetailContent({ token, uiVisible }: { token: ArtBlocksTokenDetail; uiVisible: boolean }) {
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const aspectRatio = token.project.aspect_ratio || 1;
@@ -306,8 +306,12 @@ function TokenDetailContent({ token }: { token: ArtBlocksTokenDetail }) {
           <div className="absolute inset-0 skeleton" />
         )}
 
-        {/* Artwork info overlay - scrolls with art */}
-        <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-black/70 via-black/30 to-transparent pb-8 pl-8 pt-24">
+        {/* Artwork info overlay - scrolls with art, fades on idle */}
+        <div
+          className={`pointer-events-none absolute bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-black/70 via-black/30 to-transparent pb-8 pl-8 pt-24 transition-opacity duration-500 ${
+            uiVisible ? "opacity-100" : "opacity-0"
+          }`}
+        >
           <p className="text-xs uppercase tracking-widest text-white/70 drop-shadow-md">
             {token.project.artist_name}
           </p>
