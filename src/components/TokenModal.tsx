@@ -157,10 +157,35 @@ export function TokenModal({ tokenId, tokenIds, onNavigate, onClose }: Props) {
         <div className="pointer-events-auto absolute right-4 top-4 flex items-center gap-2">
           <button
             onClick={toggleSlideshow}
-            className="rounded-full bg-black/40 p-3 text-white/70 backdrop-blur-sm transition-colors hover:bg-black/60 hover:text-white"
+            className="relative rounded-full bg-black/40 p-3 text-white/70 backdrop-blur-sm transition-colors hover:bg-black/60 hover:text-white"
             aria-label={slideshow ? "Pause slideshow" : "Play slideshow"}
             title={slideshow ? "Pause" : "Slideshow"}
           >
+            {/* Circular progress indicator */}
+            {slideshow && (
+              <svg
+                key={tokenId}
+                className="absolute inset-0 -rotate-90"
+                width="100%"
+                height="100%"
+                viewBox="0 0 44 44"
+              >
+                <circle
+                  cx="22"
+                  cy="22"
+                  r="20"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeDasharray="125.6"
+                  strokeDashoffset="125.6"
+                  className="text-accent"
+                  style={{
+                    animation: `slideshow-progress ${SLIDESHOW_INTERVAL}ms linear forwards`,
+                  }}
+                />
+              </svg>
+            )}
             {slideshow ? (
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M10 4H6v16h4V4zM18 4h-4v16h4V4z" />
