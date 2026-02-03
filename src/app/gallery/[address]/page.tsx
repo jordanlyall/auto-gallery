@@ -137,9 +137,10 @@ export default function GalleryPage() {
       <header className="fixed left-0 right-0 top-0 z-50 flex items-center justify-between px-6 py-4">
         <Link
           href="/"
-          className="museum-label rounded-full px-4 py-2 text-xs uppercase tracking-[0.2em] text-muted transition-colors hover:text-foreground"
+          className="museum-label rounded-full px-4 py-2 text-sm font-light tracking-tight text-muted transition-colors hover:text-foreground"
         >
-          Auto Gallery
+          <span>onview</span>
+          <span className="text-accent">.art</span>
         </Link>
         <div className="museum-label rounded-full p-1">
           <ThemeToggle />
