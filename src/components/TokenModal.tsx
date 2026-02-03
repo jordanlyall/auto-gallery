@@ -20,6 +20,8 @@ export function TokenModal({ tokenId, tokenIds, onNavigate, onClose }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [uiVisible, setUiVisible] = useState(true);
   const [slideshow, setSlideshow] = useState(false);
+  const [hasScrolled, setHasScrolled] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const slideshowRef = useRef<ReturnType<typeof setInterval>>(undefined);
 
@@ -62,9 +64,24 @@ export function TokenModal({ tokenId, tokenIds, onNavigate, onClose }: Props) {
     };
   }, [resetIdleTimer]);
 
+  // Hide scroll hint once user has scrolled
+  useEffect(() => {
+    const el = modalRef.current;
+    if (!el) return;
+    const handleScroll = () => {
+      if (el.scrollTop > 50) {
+        setHasScrolled(true);
+      }
+    };
+    el.addEventListener("scroll", handleScroll);
+    return () => el.removeEventListener("scroll", handleScroll);
+  }, []);
+
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
+    setHasScrolled(false);
+    if (modalRef.current) modalRef.current.scrollTop = 0;
 
     fetchTokenDetail(tokenId)
       .then((t) => {
@@ -129,7 +146,7 @@ export function TokenModal({ tokenId, tokenIds, onNavigate, onClose }: Props) {
   }, [resetIdleTimer]);
 
   return (
-    <div className="fixed inset-0 z-[100] overflow-y-auto bg-background">
+    <div ref={modalRef} className="fixed inset-0 z-[100] overflow-y-auto bg-background">
       {/* UI overlay - fixed to viewport, fades on idle */}
       <div
         className={`pointer-events-none fixed inset-0 z-[110] transition-opacity duration-500 ${
@@ -212,8 +229,8 @@ export function TokenModal({ tokenId, tokenIds, onNavigate, onClose }: Props) {
           </div>
         )}
 
-        {/* Scroll down hint - bottom center */}
-        {token && (
+        {/* Scroll down hint - bottom center, hidden after scrolling */}
+        {token && !hasScrolled && (
           <div className="pointer-events-none absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
             <p className="text-xs uppercase tracking-widest text-white/60 drop-shadow-md">
               Scroll for details
