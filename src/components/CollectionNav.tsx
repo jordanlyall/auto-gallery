@@ -59,7 +59,7 @@ export function CollectionNav({ groups }: Props) {
 
   return (
     <nav
-      className={`fixed left-1/2 top-4 z-40 -translate-x-1/2 transition-all duration-300 ${
+      className={`fixed left-1/2 top-4 z-40 hidden -translate-x-1/2 transition-all duration-300 sm:block ${
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"
       }`}
     >
