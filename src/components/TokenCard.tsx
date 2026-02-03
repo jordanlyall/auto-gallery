@@ -49,15 +49,19 @@ function HeroCard({
   token: ArtBlocksToken;
   onClick: () => void;
 }) {
+  const [loaded, setLoaded] = useState(false);
+
   return (
     <button
       onClick={onClick}
       className="group relative block h-[85vh] w-full overflow-hidden cursor-pointer text-left"
     >
+      {!loaded && <div className="absolute inset-0 skeleton" />}
       <ParallaxImage
         src={token.media_url || token.preview_asset_url}
         alt={`${token.project_name} #${token.invocation}`}
-        className="h-full w-full object-cover transition-opacity duration-700"
+        className={`h-full w-full object-cover transition-opacity duration-700 ${loaded ? "opacity-100" : "opacity-0"}`}
+        onLoad={() => setLoaded(true)}
       />
       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-8 sm:p-12">
         <p className="text-sm uppercase tracking-widest text-white/60">
@@ -94,7 +98,7 @@ function FeaturedCard({
         style={{ aspectRatio }}
       >
         {!loaded && (
-          <div className="absolute inset-0 animate-pulse bg-card" />
+          <div className="absolute inset-0 skeleton" />
         )}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -142,7 +146,7 @@ function GridCard({
         style={{ aspectRatio }}
       >
         {!loaded && (
-          <div className="absolute inset-0 animate-pulse bg-card" />
+          <div className="absolute inset-0 skeleton rounded" />
         )}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img

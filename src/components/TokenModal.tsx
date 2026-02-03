@@ -301,6 +301,7 @@ export function TokenModal({ tokenId, tokenIds, onNavigate, onClose }: Props) {
 
 function TokenDetailContent({ token }: { token: ArtBlocksTokenDetail }) {
   const [iframeLoaded, setIframeLoaded] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const aspectRatio = token.project.aspect_ratio || 1;
   const mintDate = token.minted_at
     ? new Date(token.minted_at).toLocaleDateString("en-US", {
@@ -320,6 +321,10 @@ function TokenDetailContent({ token }: { token: ArtBlocksTokenDetail }) {
     <>
       {/* Sticky artwork - stays pinned while scrolling */}
       <div className="sticky top-0 h-screen w-full overflow-hidden bg-black">
+        {/* Skeleton placeholder */}
+        {!imageLoaded && !iframeLoaded && (
+          <div className="absolute inset-0 skeleton" />
+        )}
         {token.live_view_url ? (
           <div className="relative h-full w-full">
             {!iframeLoaded && (
@@ -327,7 +332,10 @@ function TokenDetailContent({ token }: { token: ArtBlocksTokenDetail }) {
               <img
                 src={token.media_url || token.preview_asset_url}
                 alt={`${token.project_name} #${token.invocation}`}
-                className="absolute inset-0 h-full w-full object-contain"
+                onLoad={() => setImageLoaded(true)}
+                className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-500 ${
+                  imageLoaded ? "opacity-100" : "opacity-0"
+                }`}
               />
             )}
             <iframe
@@ -346,6 +354,7 @@ function TokenDetailContent({ token }: { token: ArtBlocksTokenDetail }) {
             src={token.media_url || token.preview_asset_url}
             alt={`${token.project_name} #${token.invocation}`}
             className="h-full w-full object-contain transition-opacity duration-700"
+            onLoad={() => setImageLoaded(true)}
           />
         )}
       </div>

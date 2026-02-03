@@ -6,9 +6,10 @@ interface Props {
   src: string;
   alt: string;
   className?: string;
+  onLoad?: () => void;
 }
 
-export function ParallaxImage({ src, alt, className = "" }: Props) {
+export function ParallaxImage({ src, alt, className = "", onLoad }: Props) {
   const ref = useRef<HTMLImageElement>(null);
   const [loaded, setLoaded] = useState(false);
 
@@ -41,7 +42,10 @@ export function ParallaxImage({ src, alt, className = "" }: Props) {
       ref={ref}
       src={src}
       alt={alt}
-      onLoad={() => setLoaded(true)}
+      onLoad={() => {
+        setLoaded(true);
+        onLoad?.();
+      }}
       className={`parallax-img ${className} ${loaded ? "opacity-100" : "opacity-0"}`}
     />
   );
