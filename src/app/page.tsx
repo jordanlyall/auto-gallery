@@ -15,7 +15,7 @@ export default function Home() {
             <span className="text-accent">.art</span>
           </h1>
           <p className="mt-3 text-base text-muted sm:mt-4 sm:text-lg">
-            Turn any wallet into a gallery
+            Instant galleries for Art Blocks collectors
           </p>
         </div>
 
